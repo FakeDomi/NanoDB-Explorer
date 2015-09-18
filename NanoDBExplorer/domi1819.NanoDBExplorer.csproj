@@ -35,8 +35,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Nano.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="domi1819.NanoDB, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
