@@ -75,7 +75,8 @@ namespace domi1819.NanoDBExplorer
             this.uiDbGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.uiDbGridView.Size = new System.Drawing.Size(725, 383);
             this.uiDbGridView.TabIndex = 0;
-            this.uiDbGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.HandleCellMouseClick);
+            this.uiDbGridView.SelectionChanged += new System.EventHandler(this.HandleSelectionChanged);
+            //this.uiDbGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.HandleCellMouseClick);
             this.uiDbGridView.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.HandleColumnWidthChanged);
             this.uiDbGridView.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleScroll);
             // 
@@ -153,6 +154,7 @@ namespace domi1819.NanoDBExplorer
             // 
             // uiCreateButton
             // 
+            this.uiCreateButton.Enabled = false;
             this.uiCreateButton.Location = new System.Drawing.Point(5, 447);
             this.uiCreateButton.Name = "uiCreateButton";
             this.uiCreateButton.Size = new System.Drawing.Size(98, 23);
@@ -163,6 +165,7 @@ namespace domi1819.NanoDBExplorer
             // 
             // uiSaveButton
             // 
+            this.uiSaveButton.Enabled = false;
             this.uiSaveButton.Location = new System.Drawing.Point(109, 447);
             this.uiSaveButton.Name = "uiSaveButton";
             this.uiSaveButton.Size = new System.Drawing.Size(98, 23);
@@ -173,6 +176,7 @@ namespace domi1819.NanoDBExplorer
             // 
             // uiResetButton
             // 
+            this.uiResetButton.Enabled = false;
             this.uiResetButton.Location = new System.Drawing.Point(213, 447);
             this.uiResetButton.Name = "uiResetButton";
             this.uiResetButton.Size = new System.Drawing.Size(98, 23);
@@ -183,6 +187,7 @@ namespace domi1819.NanoDBExplorer
             // 
             // uiDeleteButton
             // 
+            this.uiDeleteButton.Enabled = false;
             this.uiDeleteButton.Location = new System.Drawing.Point(317, 447);
             this.uiDeleteButton.Name = "uiDeleteButton";
             this.uiDeleteButton.Size = new System.Drawing.Size(98, 23);
@@ -214,7 +219,7 @@ namespace domi1819.NanoDBExplorer
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(450, 300);
+            this.MinimumSize = new System.Drawing.Size(438, 261);
             this.Name = "MainForm";
             this.Text = "NanoDBExplorer";
             this.SizeChanged += new System.EventHandler(this.HandleFormSizeChanged);

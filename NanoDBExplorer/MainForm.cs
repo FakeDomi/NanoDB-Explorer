@@ -1,7 +1,9 @@
 ﻿using domi1819.NanoDB;
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace domi1819.NanoDBExplorer
@@ -11,10 +13,19 @@ namespace domi1819.NanoDBExplorer
         private int loadedLine;
         private string loadedKey;
         private NanoDBFile dbFile;
+        private bool editMode = false;
 
-        public MainForm()
+        public MainForm(string[] args)
         {
             this.InitializeComponent();
+
+            if (args.Length > 0)
+            {
+                if (File.Exists(args[0]))
+                {
+                    this.OpenFile(args[0]);
+                }
+            }
         }
 
         private void HandleOpenToolStripMenuItemClick(object sender, EventArgs e)
@@ -28,48 +39,59 @@ namespace domi1819.NanoDBExplorer
 
             if (this.openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                this.dbFile = new NanoDBFile(this.openFileDialog.FileName);
+                this.OpenFile(this.openFileDialog.FileName);
+            }
+        }
 
-                if (this.dbFile.Init())
+        private void OpenFile(string path)
+        {
+            this.editMode = false;
+
+            this.dbFile = new NanoDBFile(path);
+
+            if (this.dbFile.Init())
+            {
+                this.dbFile.IndexBy(this.dbFile.RecommendedIndex);
+
+                this.dbFile.Bind();
+
+                this.uiDbGridView.Rows.Clear();
+                this.uiGridEdit.Rows.Clear();
+
+                this.uiDbGridView.ColumnCount = this.dbFile.Layout.LayoutSize;
+                this.uiGridEdit.ColumnCount = this.dbFile.Layout.LayoutSize;
+
+                for (int i = 0; i < this.dbFile.Layout.LayoutSize; i++)
                 {
-                    this.dbFile.IndexBy(this.dbFile.RecommendedIndex);
-
-                    this.dbFile.Bind();
-
-                    this.uiDbGridView.Rows.Clear();
-                    this.uiGridEdit.Rows.Clear();
-
-                    this.uiDbGridView.ColumnCount = this.dbFile.Layout.LayoutSize;
-                    this.uiGridEdit.ColumnCount = this.dbFile.Layout.LayoutSize;
-
-                    for (int i = 0; i < this.dbFile.Layout.LayoutSize; i++)
+                    if (i == this.dbFile.RecommendedIndex)
                     {
-                        if (i == this.dbFile.RecommendedIndex)
-                        {
-                            this.uiDbGridView.Columns[i].Name = ">> " + this.dbFile.Layout.LayoutElements[i].GetName();
-                        }
-                        else
-                        {
-                            this.uiDbGridView.Columns[i].Name = this.dbFile.Layout.LayoutElements[i].GetName();
-                        }
-
-                        this.uiDbGridView.Columns[i].Width = 150;
+                        this.uiDbGridView.Columns[i].Name = ">> " + this.dbFile.Layout.LayoutElements[i].GetName();
+                    }
+                    else
+                    {
+                        this.uiDbGridView.Columns[i].Name = this.dbFile.Layout.LayoutElements[i].GetName();
                     }
 
-                    foreach (var key in this.dbFile.IndexAccess.GetAllIndexes())
-                    {
-                        this.uiDbGridView.Rows.Add(this.Serialize(this.dbFile.GetLine(key)));
-                    }
-
-                    this.uiGridEdit.Rows.Add();
-
-                    this.HandleResetButtonClicked(null, null);
+                    this.uiDbGridView.Columns[i].Width = 150;
                 }
-                else
+
+                foreach (var key in this.dbFile.IndexAccess.GetAllIndexes())
                 {
-                    this.dbFile = null;
-                    MessageBox.Show("Database doesn't have a proper format!");
+                    this.uiDbGridView.Rows.Add(this.Serialize(this.dbFile.GetLine(key)));
                 }
+
+                this.uiGridEdit.Rows.Add();
+
+                this.uiResetButton.Enabled = true;
+
+                this.HandleResetButtonClicked(null, null);
+
+                this.editMode = true;
+            }
+            else
+            {
+                this.dbFile = null;
+                MessageBox.Show("Database doesn't have a proper format!");
             }
         }
 
@@ -84,6 +106,8 @@ namespace domi1819.NanoDBExplorer
 
             if (this.saveFileDialog.ShowDialog() == DialogResult.OK)
             {
+                this.editMode = false;
+
                 this.dbFile = new NanoDBFile(this.saveFileDialog.FileName);
 
                 this.dbFile.Init();
@@ -133,7 +157,11 @@ namespace domi1819.NanoDBExplorer
 
                 this.uiGridEdit.Rows.Add();
 
+                this.uiResetButton.Enabled = true;
+
                 this.HandleResetButtonClicked(null, null);
+
+                this.editMode = true;
             }
         }
 
@@ -164,10 +192,16 @@ namespace domi1819.NanoDBExplorer
 
             if (!string.IsNullOrEmpty(key) && !this.dbFile.IndexAccess.ContainsKey(key))
             {
-                this.dbFile.AddLine(dbObjects);
-                this.uiDbGridView.Rows.Add(this.Serialize(this.dbFile.GetLine(key)));
+                if (this.dbFile.AddLine(dbObjects))
+                {
+                    this.uiDbGridView.Rows.Add(this.Serialize(this.dbFile.GetLine(key)));
 
-                this.HandleResetButtonClicked(sender, null);
+                    this.HandleResetButtonClicked(sender, null);
+                }
+                else
+                {
+                    MessageBox.Show("Could not add line to database!");
+                }
             }
             else if (string.IsNullOrEmpty(key))
             {
@@ -260,6 +294,27 @@ namespace domi1819.NanoDBExplorer
             if (e.ScrollOrientation == ScrollOrientation.HorizontalScroll)
             {
                 this.uiGridEdit.HorizontalScrollingOffset = this.uiDbGridView.HorizontalScrollingOffset;
+            }
+        }
+
+        private void HandleSelectionChanged(object sender, EventArgs e)
+        {
+            if (this.editMode && this.uiDbGridView.SelectedRows.Count > 0)
+            {
+                int rowIndex = this.uiDbGridView.SelectedRows[0].Index;
+
+                this.loadedLine = rowIndex;
+                this.loadedKey = (string)this.uiDbGridView.Rows[rowIndex].Cells[this.dbFile.RecommendedIndex].Value;
+
+                this.uiGridEdit.Rows.RemoveAt(0);
+
+                object[] objects = this.dbFile.GetLine(this.loadedKey);
+
+                this.uiGridEdit.Rows.Add(this.Serialize(objects));
+
+                this.uiCreateButton.Enabled = false;
+                this.uiSaveButton.Enabled = true;
+                this.uiDeleteButton.Enabled = true;
             }
         }
 
