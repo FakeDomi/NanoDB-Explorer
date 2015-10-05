@@ -1,9 +1,9 @@
 ﻿using domi1819.NanoDB;
-
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace domi1819.NanoDBExplorer
@@ -83,10 +83,10 @@ namespace domi1819.NanoDBExplorer
                 this.uiGridEdit.Rows.Add();
 
                 this.uiResetButton.Enabled = true;
-
-                this.HandleResetButtonClicked(null, null);
-
                 this.editMode = true;
+
+                // Workaround to reset the selection when started with a parameter
+                new Thread(() => { Thread.Sleep(50); this.Invoke((MethodInvoker)(() => this.HandleResetButtonClicked(null, null))); }).Start();
             }
             else
             {
@@ -231,7 +231,8 @@ namespace domi1819.NanoDBExplorer
             if (key == this.loadedKey || (!string.IsNullOrEmpty(key) && !this.dbFile.IndexAccess.ContainsKey(key)))
             {
                 this.dbFile.UpdateLine(this.loadedKey, objects);
-                this.uiDbGridView.Rows[this.loadedLine].SetValues(this.dbFile.GetLine(key));
+
+                this.uiDbGridView.Rows[this.loadedLine].SetValues(this.Serialize(this.dbFile.GetLine(key)));
 
                 this.HandleResetButtonClicked(sender, null);
             }

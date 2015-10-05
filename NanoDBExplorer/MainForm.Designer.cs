@@ -74,11 +74,11 @@ namespace domi1819.NanoDBExplorer
             this.uiDbGridView.RowTemplate.ReadOnly = true;
             this.uiDbGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.uiDbGridView.Size = new System.Drawing.Size(725, 383);
-            this.uiDbGridView.TabIndex = 0;
-            this.uiDbGridView.SelectionChanged += new System.EventHandler(this.HandleSelectionChanged);
-            //this.uiDbGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.HandleCellMouseClick);
+            this.uiDbGridView.TabIndex = 1000;
+            this.uiDbGridView.TabStop = false;
             this.uiDbGridView.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.HandleColumnWidthChanged);
             this.uiDbGridView.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleScroll);
+            this.uiDbGridView.SelectionChanged += new System.EventHandler(this.HandleSelectionChanged);
             // 
             // menuStrip1
             // 
@@ -158,7 +158,7 @@ namespace domi1819.NanoDBExplorer
             this.uiCreateButton.Location = new System.Drawing.Point(5, 447);
             this.uiCreateButton.Name = "uiCreateButton";
             this.uiCreateButton.Size = new System.Drawing.Size(98, 23);
-            this.uiCreateButton.TabIndex = 2;
+            this.uiCreateButton.TabIndex = 1;
             this.uiCreateButton.Text = "Create";
             this.uiCreateButton.UseVisualStyleBackColor = true;
             this.uiCreateButton.Click += new System.EventHandler(this.HandleCreateButtonClicked);
@@ -180,7 +180,7 @@ namespace domi1819.NanoDBExplorer
             this.uiResetButton.Location = new System.Drawing.Point(213, 447);
             this.uiResetButton.Name = "uiResetButton";
             this.uiResetButton.Size = new System.Drawing.Size(98, 23);
-            this.uiResetButton.TabIndex = 2;
+            this.uiResetButton.TabIndex = 3;
             this.uiResetButton.Text = "Reset";
             this.uiResetButton.UseVisualStyleBackColor = true;
             this.uiResetButton.Click += new System.EventHandler(this.HandleResetButtonClicked);
@@ -191,7 +191,7 @@ namespace domi1819.NanoDBExplorer
             this.uiDeleteButton.Location = new System.Drawing.Point(317, 447);
             this.uiDeleteButton.Name = "uiDeleteButton";
             this.uiDeleteButton.Size = new System.Drawing.Size(98, 23);
-            this.uiDeleteButton.TabIndex = 2;
+            this.uiDeleteButton.TabIndex = 4;
             this.uiDeleteButton.Text = "Delete";
             this.uiDeleteButton.UseVisualStyleBackColor = true;
             this.uiDeleteButton.Click += new System.EventHandler(this.HandleDeleteButtonClicked);
