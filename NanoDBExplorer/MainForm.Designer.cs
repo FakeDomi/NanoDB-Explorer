@@ -222,7 +222,6 @@ namespace domi1819.NanoDBExplorer
             this.MinimumSize = new System.Drawing.Size(438, 261);
             this.Name = "MainForm";
             this.Text = "NanoDBExplorer";
-            this.SizeChanged += new System.EventHandler(this.HandleFormSizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.uiDbGridView)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

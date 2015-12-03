@@ -13,7 +13,7 @@ namespace domi1819.NanoDBExplorer
         private int loadedLine;
         private string loadedKey;
         private NanoDBFile dbFile;
-        private bool editMode = false;
+        private bool editMode;
 
         public MainForm(string[] args)
         {
@@ -26,6 +26,8 @@ namespace domi1819.NanoDBExplorer
                     this.OpenFile(args[0]);
                 }
             }
+
+            this.Resize += this.HandleFormSizeChanged;
         }
 
         private void HandleOpenToolStripMenuItemClick(object sender, EventArgs e)
@@ -49,9 +51,9 @@ namespace domi1819.NanoDBExplorer
 
             this.dbFile = new NanoDBFile(path);
 
-            if (this.dbFile.Init())
+            if (this.dbFile.Initialize() == InitializeResult.Success)
             {
-                this.dbFile.IndexBy(this.dbFile.RecommendedIndex);
+                this.dbFile.Load(this.dbFile.RecommendedIndex);
 
                 this.dbFile.Bind();
 
@@ -75,7 +77,7 @@ namespace domi1819.NanoDBExplorer
                     this.uiDbGridView.Columns[i].Width = 150;
                 }
 
-                foreach (var key in this.dbFile.IndexAccess.GetAllIndexes())
+                foreach (var key in this.dbFile.GetAllKeys())
                 {
                     this.uiDbGridView.Rows.Add(this.Serialize(this.dbFile.GetLine(key)));
                 }
@@ -91,7 +93,7 @@ namespace domi1819.NanoDBExplorer
             else
             {
                 this.dbFile = null;
-                MessageBox.Show("Database doesn't have a proper format!");
+                MessageBox.Show(this, "Database doesn't have a proper format!");
             }
         }
 
@@ -110,7 +112,7 @@ namespace domi1819.NanoDBExplorer
 
                 this.dbFile = new NanoDBFile(this.saveFileDialog.FileName);
 
-                this.dbFile.Init();
+                this.dbFile.Initialize();
 
                 List<NanoDBElement> list = new List<NanoDBElement>();
 
@@ -190,9 +192,9 @@ namespace domi1819.NanoDBExplorer
                 }
             }
 
-            if (!string.IsNullOrEmpty(key) && !this.dbFile.IndexAccess.ContainsKey(key))
+            if (!string.IsNullOrEmpty(key) && !this.dbFile.ContainsKey(key))
             {
-                if (this.dbFile.AddLine(dbObjects))
+                if (this.dbFile.AddLine(dbObjects) != null)
                 {
                     this.uiDbGridView.Rows.Add(this.Serialize(this.dbFile.GetLine(key)));
 
@@ -200,16 +202,16 @@ namespace domi1819.NanoDBExplorer
                 }
                 else
                 {
-                    MessageBox.Show("Could not add line to database!");
+                    MessageBox.Show(this, "Could not add line to database!");
                 }
             }
             else if (string.IsNullOrEmpty(key))
             {
-                MessageBox.Show("Invalid key!");
+                MessageBox.Show(this, "Invalid key!");
             }
             else
             {
-                MessageBox.Show("Key " + key + " already exists!");
+                MessageBox.Show(this, "Key " + key + " already exists!");
             }
         }
 
@@ -228,9 +230,9 @@ namespace domi1819.NanoDBExplorer
                 }
             }
 
-            if (key == this.loadedKey || (!string.IsNullOrEmpty(key) && !this.dbFile.IndexAccess.ContainsKey(key)))
+            if (key == this.loadedKey || (!string.IsNullOrEmpty(key) && !this.dbFile.ContainsKey(key)))
             {
-                this.dbFile.UpdateLine(this.loadedKey, objects);
+                this.dbFile.GetLine(key).SetValues(objects);
 
                 this.uiDbGridView.Rows[this.loadedLine].SetValues(this.Serialize(this.dbFile.GetLine(key)));
 
@@ -238,11 +240,11 @@ namespace domi1819.NanoDBExplorer
             }
             else if (string.IsNullOrEmpty(key))
             {
-                MessageBox.Show("Invalid key!");
+                MessageBox.Show(this, "Invalid key!");
             }
             else
             {
-                MessageBox.Show("Key " + key + " already exists!");
+                MessageBox.Show(this, "Key " + key + " already exists!");
             }
         }
 
@@ -263,7 +265,7 @@ namespace domi1819.NanoDBExplorer
 
         private void HandleDeleteButtonClicked(object sender, EventArgs e)
         {
-            this.dbFile.RemoveLine(this.loadedKey);
+            this.dbFile.GetLine(this.loadedKey).Remove();
             this.uiDbGridView.Rows.RemoveAt(this.loadedLine);
 
             this.HandleResetButtonClicked(sender, null);
@@ -309,28 +311,9 @@ namespace domi1819.NanoDBExplorer
 
                 this.uiGridEdit.Rows.RemoveAt(0);
 
-                object[] objects = this.dbFile.GetLine(this.loadedKey);
+                NanoDBLine line = this.dbFile.GetLine(this.loadedKey);
 
-                this.uiGridEdit.Rows.Add(this.Serialize(objects));
-
-                this.uiCreateButton.Enabled = false;
-                this.uiSaveButton.Enabled = true;
-                this.uiDeleteButton.Enabled = true;
-            }
-        }
-
-        private void HandleCellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                this.loadedLine = e.RowIndex;
-                this.loadedKey = (string)this.uiDbGridView.Rows[e.RowIndex].Cells[this.dbFile.RecommendedIndex].Value;
-
-                this.uiGridEdit.Rows.RemoveAt(0);
-
-                object[] objects = this.dbFile.GetLine(this.loadedKey);
-
-                this.uiGridEdit.Rows.Add(this.Serialize(objects));
+                this.uiGridEdit.Rows.Add(this.Serialize(line));
 
                 this.uiCreateButton.Enabled = false;
                 this.uiSaveButton.Enabled = true;
@@ -338,17 +321,19 @@ namespace domi1819.NanoDBExplorer
             }
         }
 
-        private object[] Serialize(object[] objects)
+        private object[] Serialize(NanoDBLine objects)
         {
-            if (objects.Length == this.dbFile.Layout.LayoutSize)
+            object[] retObjects = new object[objects.ElementCount];
+
+            if (objects.ElementCount == this.dbFile.Layout.LayoutSize)
             {
-                for (int i = 0; i < objects.Length; i++)
+                for (int i = 0; i < objects.ElementCount; i++)
                 {
-                    objects[i] = this.dbFile.Layout.LayoutElements[i].Serialize(objects[i]);
+                    retObjects[i] = this.dbFile.Layout.LayoutElements[i].Serialize(objects[i]);
                 }
             }
 
-            return objects;
+            return retObjects;
         }
     }
 }
