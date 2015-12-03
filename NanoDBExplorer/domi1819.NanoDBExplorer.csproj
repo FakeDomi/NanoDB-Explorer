@@ -55,6 +55,9 @@
     <Compile Include="ElementDialog.Designer.cs">
       <DependentUpon>ElementDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="KeyCaptureDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -30,13 +30,24 @@ namespace domi1819.NanoDBExplorer
             this.Resize += this.HandleFormSizeChanged;
         }
 
+        internal void GridEditEnterKeyDown()
+        {
+            if (this.uiCreateButton.Enabled)
+            {
+                this.uiDbGridView.Focus();
+                this.HandleCreateButtonClicked(null, null);
+                this.uiGridEdit.Focus();
+            }
+            else if (this.uiSaveButton.Enabled)
+            {
+                this.uiDbGridView.Focus();
+                this.HandleSaveButtonClicked(null, null);
+                this.uiGridEdit.Focus();
+            }
+        }
+
         private void HandleOpenToolStripMenuItemClick(object sender, EventArgs e)
         {
-            if (this.dbFile != null)
-            {
-                this.dbFile.Unbind();
-            }
-
             this.openFileDialog.FileName = "";
 
             if (this.openFileDialog.ShowDialog() == DialogResult.OK)
@@ -48,6 +59,11 @@ namespace domi1819.NanoDBExplorer
         private void OpenFile(string path)
         {
             this.editMode = false;
+
+            if (this.dbFile != null)
+            {
+                this.dbFile.Unbind();
+            }
 
             this.dbFile = new NanoDBFile(path);
 
@@ -334,6 +350,26 @@ namespace domi1819.NanoDBExplorer
             }
 
             return retObjects;
+        }
+
+        private void HandleDragFile(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files.Length == 1 && !File.GetAttributes(files[0]).HasFlag(FileAttributes.Directory))
+            {
+                e.Effect = DragDropEffects.Move;
+                return;
+            }
+
+            e.Effect = DragDropEffects.None;
+        }
+
+        private void HandleDropFile(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            this.OpenFile(files[0]);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace domi1819.NanoDBExplorer
             this.openToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.uiGridEdit = new System.Windows.Forms.DataGridView();
+            this.uiGridEdit = new domi1819.NanoDBExplorer.KeyCaptureDataGridView();
             this.uiCreateButton = new System.Windows.Forms.Button();
             this.uiSaveButton = new System.Windows.Forms.Button();
             this.uiResetButton = new System.Windows.Forms.Button();
@@ -54,6 +54,7 @@ namespace domi1819.NanoDBExplorer
             // 
             // uiDbGridView
             // 
+            this.uiDbGridView.AllowDrop = true;
             this.uiDbGridView.AllowUserToAddRows = false;
             this.uiDbGridView.AllowUserToDeleteRows = false;
             this.uiDbGridView.AllowUserToResizeRows = false;
@@ -79,6 +80,8 @@ namespace domi1819.NanoDBExplorer
             this.uiDbGridView.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.HandleColumnWidthChanged);
             this.uiDbGridView.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleScroll);
             this.uiDbGridView.SelectionChanged += new System.EventHandler(this.HandleSelectionChanged);
+            this.uiDbGridView.DragOver += new DragEventHandler(this.HandleDragFile);
+            this.uiDbGridView.DragDrop += new DragEventHandler(this.HandleDropFile);
             // 
             // menuStrip1
             // 
@@ -240,7 +243,7 @@ namespace domi1819.NanoDBExplorer
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem1;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private DataGridView uiGridEdit;
+        private KeyCaptureDataGridView uiGridEdit;
         private Button uiCreateButton;
         private Button uiSaveButton;
         private Button uiResetButton;
