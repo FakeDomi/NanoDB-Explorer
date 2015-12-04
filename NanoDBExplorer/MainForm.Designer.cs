@@ -40,13 +40,13 @@ namespace domi1819.NanoDBExplorer
             this.openToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.uiGridEdit = new domi1819.NanoDBExplorer.KeyCaptureDataGridView();
             this.uiCreateButton = new System.Windows.Forms.Button();
             this.uiSaveButton = new System.Windows.Forms.Button();
             this.uiResetButton = new System.Windows.Forms.Button();
             this.uiDeleteButton = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.uiGridEdit = new domi1819.NanoDBExplorer.KeyCaptureDataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.uiDbGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uiGridEdit)).BeginInit();
@@ -80,8 +80,8 @@ namespace domi1819.NanoDBExplorer
             this.uiDbGridView.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.HandleColumnWidthChanged);
             this.uiDbGridView.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleScroll);
             this.uiDbGridView.SelectionChanged += new System.EventHandler(this.HandleSelectionChanged);
-            this.uiDbGridView.DragOver += new DragEventHandler(this.HandleDragFile);
-            this.uiDbGridView.DragDrop += new DragEventHandler(this.HandleDropFile);
+            this.uiDbGridView.DragDrop += new System.Windows.Forms.DragEventHandler(this.HandleDropFile);
+            this.uiDbGridView.DragOver += new System.Windows.Forms.DragEventHandler(this.HandleDragFile);
             // 
             // menuStrip1
             // 
@@ -129,31 +129,6 @@ namespace domi1819.NanoDBExplorer
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.HandleExitToolStripMenuItemClick);
-            // 
-            // uiGridEdit
-            // 
-            this.uiGridEdit.AllowUserToAddRows = false;
-            this.uiGridEdit.AllowUserToDeleteRows = false;
-            this.uiGridEdit.AllowUserToResizeColumns = false;
-            this.uiGridEdit.AllowUserToResizeRows = false;
-            this.uiGridEdit.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.uiGridEdit.ColumnHeadersVisible = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.NullValue = null;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.uiGridEdit.DefaultCellStyle = dataGridViewCellStyle2;
-            this.uiGridEdit.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.uiGridEdit.Location = new System.Drawing.Point(-1, 416);
-            this.uiGridEdit.Name = "uiGridEdit";
-            this.uiGridEdit.RowHeadersVisible = false;
-            this.uiGridEdit.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.uiGridEdit.Size = new System.Drawing.Size(725, 25);
-            this.uiGridEdit.TabIndex = 0;
             // 
             // uiCreateButton
             // 
@@ -207,6 +182,31 @@ namespace domi1819.NanoDBExplorer
             // saveFileDialog
             // 
             this.saveFileDialog.Filter = "NanoDB files|*.nano|All files|*.*";
+            // 
+            // uiGridEdit
+            // 
+            this.uiGridEdit.AllowUserToAddRows = false;
+            this.uiGridEdit.AllowUserToDeleteRows = false;
+            this.uiGridEdit.AllowUserToResizeColumns = false;
+            this.uiGridEdit.AllowUserToResizeRows = false;
+            this.uiGridEdit.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.uiGridEdit.ColumnHeadersVisible = false;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.NullValue = null;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.uiGridEdit.DefaultCellStyle = dataGridViewCellStyle2;
+            this.uiGridEdit.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.uiGridEdit.Location = new System.Drawing.Point(-1, 416);
+            this.uiGridEdit.Name = "uiGridEdit";
+            this.uiGridEdit.RowHeadersVisible = false;
+            this.uiGridEdit.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.uiGridEdit.Size = new System.Drawing.Size(725, 25);
+            this.uiGridEdit.TabIndex = 0;
             // 
             // MainForm
             // 

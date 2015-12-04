@@ -41,6 +41,10 @@ namespace domi1819.NanoDBExplorer
 
             if (num > 0)
             {
+                this.uiElementComboBox.Items.Add("DataBlob32");
+                this.uiElementComboBox.Items.Add("DataBlob64");
+                this.uiElementComboBox.Items.Add("DataBlob128");
+                this.uiElementComboBox.Items.Add("DataBlob256");
                 this.uiElementComboBox.Items.Add("DateTime");
             }
         }
@@ -101,6 +105,18 @@ namespace domi1819.NanoDBExplorer
                     break;
                 case "String256":
                     this.ReturnValue = NanoDBElement.String256;
+                    break;
+                case "DataBlob32":
+                    this.ReturnValue = NanoDBElement.DataBlob32;
+                    break;
+                case "DataBlob64":
+                    this.ReturnValue = NanoDBElement.DataBlob64;
+                    break;
+                case "DataBlob128":
+                    this.ReturnValue = NanoDBElement.DataBlob128;
+                    break;
+                case "DataBlob256":
+                    this.ReturnValue = NanoDBElement.DataBlob256;
                     break;
                 case "DateTime":
                     this.ReturnValue = NanoDBElement.DateTime;

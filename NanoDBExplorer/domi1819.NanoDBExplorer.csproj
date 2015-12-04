@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlobEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BlobEditor.Designer.cs">
+      <DependentUpon>BlobEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="ElementDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +72,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BlobEditor.resx">
+      <DependentUpon>BlobEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ElementDialog.resx">
       <DependentUpon>ElementDialog.cs</DependentUpon>
     </EmbeddedResource>
