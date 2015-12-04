@@ -10,6 +10,10 @@ namespace domi1819.NanoDBExplorer
             {
                 ((MainForm)this.Parent).GridEditEnterKeyDown();
             }
+            else if (keyData == Keys.Up)
+            {
+                ((MainForm)this.Parent).GridEditUpKeyDown();
+            }
             
             return base.ProcessCmdKey(ref msg, keyData);
         }

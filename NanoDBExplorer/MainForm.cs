@@ -46,11 +46,30 @@ namespace domi1819.NanoDBExplorer
             }
         }
 
+        internal void GridEditUpKeyDown()
+        {
+            DataGridViewSelectedCellCollection cells = this.uiGridEdit.SelectedCells;
+
+            if (cells.Count > 0 && this.dbFile.Layout.LayoutElements[cells[0].ColumnIndex] is DataBlobElement)
+            {
+                this.uiDbGridView.Focus();
+                this.uiGridEdit.Focus();
+
+                BlobEditor editor = new BlobEditor((string)cells[0].Value);
+
+                cells[0].Value = editor.GetResult(this);
+                editor.Dispose();
+
+                this.uiDbGridView.Focus();
+                this.uiGridEdit.Focus();
+            }
+        }
+
         private void HandleOpenToolStripMenuItemClick(object sender, EventArgs e)
         {
             this.openFileDialog.FileName = "";
 
-            if (this.openFileDialog.ShowDialog() == DialogResult.OK)
+            if (this.openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 this.OpenFile(this.openFileDialog.FileName);
             }
@@ -93,7 +112,7 @@ namespace domi1819.NanoDBExplorer
                     this.uiDbGridView.Columns[i].Width = 150;
                 }
 
-                foreach (var key in this.dbFile.GetAllKeys())
+                foreach (string key in this.dbFile.GetAllKeys())
                 {
                     this.uiDbGridView.Rows.Add(this.Serialize(this.dbFile.GetLine(key)));
                 }

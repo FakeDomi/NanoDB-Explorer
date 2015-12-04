@@ -30,59 +30,90 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.uiEditTextBox = new System.Windows.Forms.TextBox();
+            this.uiFormatComboBox = new System.Windows.Forms.ComboBox();
+            this.uiOkButton = new System.Windows.Forms.Button();
+            this.uiCancelButton = new System.Windows.Forms.Button();
+            this.uiSpacesCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
-            // textBox1
+            // uiEditTextBox
             // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.textBox1.Location = new System.Drawing.Point(12, 12);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(410, 259);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.KeyDown += new KeyEventHandler(this.HandleTextBoxKeyDown);
+            this.uiEditTextBox.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.uiEditTextBox.Location = new System.Drawing.Point(12, 12);
+            this.uiEditTextBox.Multiline = true;
+            this.uiEditTextBox.Name = "uiEditTextBox";
+            this.uiEditTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.uiEditTextBox.Size = new System.Drawing.Size(410, 259);
+            this.uiEditTextBox.TabIndex = 0;
+            this.uiEditTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EditTextBoxKeyDownEvent);
             // 
-            // comboBox1
+            // uiFormatComboBox
             // 
-            this.comboBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.comboBox1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.uiFormatComboBox.BackColor = System.Drawing.SystemColors.Control;
+            this.uiFormatComboBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.uiFormatComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uiFormatComboBox.FormattingEnabled = true;
+            this.uiFormatComboBox.Items.AddRange(new object[] {
             "Dec",
             "Hex"});
-            this.comboBox1.Location = new System.Drawing.Point(12, 278);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(72, 21);
-            this.comboBox1.TabIndex = 1;
-            this.comboBox1.TabStop = false;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.uiFormatComboBox.Location = new System.Drawing.Point(12, 278);
+            this.uiFormatComboBox.Name = "uiFormatComboBox";
+            this.uiFormatComboBox.Size = new System.Drawing.Size(72, 21);
+            this.uiFormatComboBox.TabIndex = 1;
+            this.uiFormatComboBox.TabStop = false;
+            this.uiFormatComboBox.SelectedIndexChanged += new System.EventHandler(this.FormatComboBoxSelectedIndexChangedEvent);
             // 
-            // button1
+            // uiOkButton
             // 
-            this.button1.Location = new System.Drawing.Point(347, 277);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Ok";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.uiOkButton.Location = new System.Drawing.Point(347, 277);
+            this.uiOkButton.Name = "uiOkButton";
+            this.uiOkButton.Size = new System.Drawing.Size(75, 23);
+            this.uiOkButton.TabIndex = 2;
+            this.uiOkButton.Text = "OK";
+            this.uiOkButton.UseVisualStyleBackColor = true;
+            this.uiOkButton.Click += new System.EventHandler(this.OkButtonClickEvent);
+            // 
+            // uiCancelButton
+            // 
+            this.uiCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.uiCancelButton.Location = new System.Drawing.Point(266, 277);
+            this.uiCancelButton.Name = "uiCancelButton";
+            this.uiCancelButton.Size = new System.Drawing.Size(75, 23);
+            this.uiCancelButton.TabIndex = 3;
+            this.uiCancelButton.Text = "Cancel";
+            this.uiCancelButton.UseVisualStyleBackColor = true;
+            this.uiCancelButton.Click += new System.EventHandler(this.CancelButtonClickEvent);
+            // 
+            // uiSpacesCheckBox
+            // 
+            this.uiSpacesCheckBox.AutoSize = true;
+            this.uiSpacesCheckBox.Checked = true;
+            this.uiSpacesCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.uiSpacesCheckBox.Location = new System.Drawing.Point(93, 281);
+            this.uiSpacesCheckBox.Name = "uiSpacesCheckBox";
+            this.uiSpacesCheckBox.Size = new System.Drawing.Size(134, 17);
+            this.uiSpacesCheckBox.TabIndex = 4;
+            this.uiSpacesCheckBox.Text = "Spaces between bytes";
+            this.uiSpacesCheckBox.UseVisualStyleBackColor = true;
+            this.uiSpacesCheckBox.CheckedChanged += new System.EventHandler(this.SpacesCheckBoxCheckedChangedEvent);
             // 
             // BlobEditor
             // 
-            this.AcceptButton = this.button1;
+            this.AcceptButton = this.uiOkButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.uiCancelButton;
             this.ClientSize = new System.Drawing.Size(434, 312);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.uiSpacesCheckBox);
+            this.Controls.Add(this.uiCancelButton);
+            this.Controls.Add(this.uiOkButton);
+            this.Controls.Add(this.uiEditTextBox);
+            this.Controls.Add(this.uiFormatComboBox);
+            this.MinimumSize = new System.Drawing.Size(450, 250);
             this.Name = "BlobEditor";
-            this.Text = "BlobEditor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Blob Editor";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -90,8 +121,10 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox uiEditTextBox;
+        private System.Windows.Forms.ComboBox uiFormatComboBox;
+        private System.Windows.Forms.Button uiOkButton;
+        private Button uiCancelButton;
+        private CheckBox uiSpacesCheckBox;
     }
 }
