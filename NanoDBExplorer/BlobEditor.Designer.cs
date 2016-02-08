@@ -30,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BlobEditor));
             this.uiEditTextBox = new System.Windows.Forms.TextBox();
             this.uiFormatComboBox = new System.Windows.Forms.ComboBox();
             this.uiOkButton = new System.Windows.Forms.Button();
@@ -110,6 +111,7 @@
             this.Controls.Add(this.uiOkButton);
             this.Controls.Add(this.uiEditTextBox);
             this.Controls.Add(this.uiFormatComboBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(450, 250);
             this.Name = "BlobEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

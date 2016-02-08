@@ -1,13 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace domi1819.NanoDBExplorer
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-
     public partial class BlobEditor : Form
     {
         private readonly string baseValue;
@@ -35,7 +34,7 @@ namespace domi1819.NanoDBExplorer
             bool dec = this.uiFormatComboBox.SelectedIndex == 0;
             bool spaces = this.uiSpacesCheckBox.Checked;
 
-            return LoadBytes(GetBytes(dec, spaces, this.uiEditTextBox.Text), dec, spaces);
+            return LoadBytes(GetBytes(dec, spaces, this.uiEditTextBox.Text), true, true);
         }
 
         private void FormatComboBoxSelectedIndexChangedEvent(object sender, EventArgs e)

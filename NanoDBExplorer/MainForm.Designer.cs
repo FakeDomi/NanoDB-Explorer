@@ -47,6 +47,8 @@ namespace domi1819.NanoDBExplorer
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.uiGridEdit = new domi1819.NanoDBExplorer.KeyCaptureDataGridView();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dBCleanerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.uiDbGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uiGridEdit)).BeginInit();
@@ -86,7 +88,8 @@ namespace domi1819.NanoDBExplorer
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem});
+            this.openToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(723, 24);
@@ -107,26 +110,26 @@ namespace domi1819.NanoDBExplorer
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "New...";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.HandleNewToolStripMenuItemClick);
             // 
             // openToolStripMenuItem1
             // 
             this.openToolStripMenuItem1.Name = "openToolStripMenuItem1";
-            this.openToolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.openToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem1.Text = "Open...";
             this.openToolStripMenuItem1.Click += new System.EventHandler(this.HandleOpenToolStripMenuItemClick);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(109, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.HandleExitToolStripMenuItemClick);
             // 
@@ -208,6 +211,21 @@ namespace domi1819.NanoDBExplorer
             this.uiGridEdit.Size = new System.Drawing.Size(725, 25);
             this.uiGridEdit.TabIndex = 0;
             // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dBCleanerToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // dBCleanerToolStripMenuItem
+            // 
+            this.dBCleanerToolStripMenuItem.Name = "dBCleanerToolStripMenuItem";
+            this.dBCleanerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dBCleanerToolStripMenuItem.Text = "DBCleaner";
+            this.dBCleanerToolStripMenuItem.Click += new System.EventHandler(this.HandleDbCleanerToolStripMenuItemClick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -225,6 +243,7 @@ namespace domi1819.NanoDBExplorer
             this.MinimumSize = new System.Drawing.Size(438, 261);
             this.Name = "MainForm";
             this.Text = "NanoDBExplorer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HandleFormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.uiDbGridView)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -250,6 +269,8 @@ namespace domi1819.NanoDBExplorer
         private Button uiDeleteButton;
         private OpenFileDialog openFileDialog;
         private SaveFileDialog saveFileDialog;
+        private ToolStripMenuItem toolsToolStripMenuItem;
+        private ToolStripMenuItem dBCleanerToolStripMenuItem;
     }
 }
 

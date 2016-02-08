@@ -50,7 +50,7 @@ namespace domi1819.NanoDBExplorer
         {
             DataGridViewSelectedCellCollection cells = this.uiGridEdit.SelectedCells;
 
-            if (cells.Count > 0 && this.dbFile.Layout.LayoutElements[cells[0].ColumnIndex] is DataBlobElement)
+            if (cells.Count > 0 && this.dbFile.Layout.Elements[cells[0].ColumnIndex] is DataBlobElement)
             {
                 this.uiDbGridView.Focus();
                 this.uiGridEdit.Focus();
@@ -102,11 +102,11 @@ namespace domi1819.NanoDBExplorer
                 {
                     if (i == this.dbFile.RecommendedIndex)
                     {
-                        this.uiDbGridView.Columns[i].Name = ">> " + this.dbFile.Layout.LayoutElements[i].GetName();
+                        this.uiDbGridView.Columns[i].Name = ">> " + this.dbFile.Layout.Elements[i].GetName();
                     }
                     else
                     {
-                        this.uiDbGridView.Columns[i].Name = this.dbFile.Layout.LayoutElements[i].GetName();
+                        this.uiDbGridView.Columns[i].Name = this.dbFile.Layout.Elements[i].GetName();
                     }
 
                     this.uiDbGridView.Columns[i].Width = 150;
@@ -182,11 +182,11 @@ namespace domi1819.NanoDBExplorer
                 {
                     if (i == this.dbFile.RecommendedIndex)
                     {
-                        this.uiDbGridView.Columns[i].Name = ">> " + this.dbFile.Layout.LayoutElements[i].GetName();
+                        this.uiDbGridView.Columns[i].Name = ">> " + this.dbFile.Layout.Elements[i].GetName();
                     }
                     else
                     {
-                        this.uiDbGridView.Columns[i].Name = this.dbFile.Layout.LayoutElements[i].GetName();
+                        this.uiDbGridView.Columns[i].Name = this.dbFile.Layout.Elements[i].GetName();
                     }
 
                     this.uiDbGridView.Columns[i].Width = 150;
@@ -212,6 +212,25 @@ namespace domi1819.NanoDBExplorer
             Application.Exit();
         }
 
+        private void HandleDbCleanerToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            if (this.dbFile != null)
+            {
+                DbCleaner cleaner = new DbCleaner(this.dbFile);
+
+                cleaner.ShowDialog(this);
+
+                if (cleaner.ReopenPath != null)
+                {
+                    this.OpenFile(cleaner.ReopenPath);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please open a database file first!");
+            }
+        }
+
         private void HandleCreateButtonClicked(object sender, EventArgs e)
         {
             object[] dbObjects = new object[this.uiGridEdit.Columns.Count];
@@ -219,7 +238,7 @@ namespace domi1819.NanoDBExplorer
 
             for (int i = 0; i < this.uiGridEdit.Columns.Count; i++)
             {
-                dbObjects[i] = this.dbFile.Layout.LayoutElements[i].Deserialize((string)this.uiGridEdit.Rows[0].Cells[i].Value);
+                dbObjects[i] = this.dbFile.Layout.Elements[i].Deserialize((string)this.uiGridEdit.Rows[0].Cells[i].Value);
 
                 if (i == this.dbFile.RecommendedIndex)
                 {
@@ -257,7 +276,7 @@ namespace domi1819.NanoDBExplorer
 
             for (int i = 0; i < this.uiGridEdit.Columns.Count; i++)
             {
-                objects[i] = this.dbFile.Layout.LayoutElements[i].Deserialize(this.uiGridEdit.Rows[0].Cells[i].Value.ToString());
+                objects[i] = this.dbFile.Layout.Elements[i].Deserialize(this.uiGridEdit.Rows[0].Cells[i].Value.ToString());
 
                 if (i == this.dbFile.RecommendedIndex)
                 {
@@ -267,7 +286,7 @@ namespace domi1819.NanoDBExplorer
 
             if (key == this.loadedKey || (!string.IsNullOrEmpty(key) && !this.dbFile.ContainsKey(key)))
             {
-                this.dbFile.GetLine(key).SetValues(objects);
+                this.dbFile.GetLine(this.loadedKey).SetValues(objects);
 
                 this.uiDbGridView.Rows[this.loadedLine].SetValues(this.Serialize(this.dbFile.GetLine(key)));
 
@@ -364,7 +383,7 @@ namespace domi1819.NanoDBExplorer
             {
                 for (int i = 0; i < objects.ElementCount; i++)
                 {
-                    retObjects[i] = this.dbFile.Layout.LayoutElements[i].Serialize(objects[i]);
+                    retObjects[i] = this.dbFile.Layout.Elements[i].Serialize(objects[i]);
                 }
             }
 
@@ -389,6 +408,14 @@ namespace domi1819.NanoDBExplorer
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
             this.OpenFile(files[0]);
+        }
+
+        private void HandleFormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (this.dbFile != null)
+            {
+                this.dbFile.Unbind();
+            }
         }
     }
 }
