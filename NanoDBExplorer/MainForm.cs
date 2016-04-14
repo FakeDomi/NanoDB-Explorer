@@ -15,17 +15,13 @@ namespace domi1819.NanoDBExplorer
         private NanoDBFile dbFile;
         private bool editMode;
 
+        private string[] args;
+
         public MainForm(string[] args)
         {
             this.InitializeComponent();
 
-            if (args.Length > 0)
-            {
-                if (File.Exists(args[0]))
-                {
-                    this.OpenFile(args[0]);
-                }
-            }
+            this.args = args;
 
             this.Resize += this.HandleFormSizeChanged;
         }
@@ -415,6 +411,16 @@ namespace domi1819.NanoDBExplorer
             if (this.dbFile != null)
             {
                 this.dbFile.Unbind();
+            }
+        }
+
+        private void HandleFormLoad(object sender, EventArgs e)
+        {
+            this.Refresh();
+
+            if (this.args.Length > 0 && File.Exists(this.args[0]))
+            {
+                new Thread(() => { Thread.Sleep(100); this.Invoke((MethodInvoker)(() => this.OpenFile(this.args[0]))); }).Start();
             }
         }
     }
